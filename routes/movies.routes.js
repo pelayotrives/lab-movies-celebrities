@@ -1,6 +1,7 @@
 const res = require("express/lib/response");
 const ModelMovie = require("../models/Movie.model");
-const ModelCelebrities = require("../models/Celebrity.model.js")
+const ModelCelebrities = require("../models/Celebrity.model.js");
+const { Model } = require("mongoose");
 
 const router = require("express").Router();
 
@@ -56,7 +57,7 @@ router.get("/:id/details", (req, res, next) => {
     ModelMovie.findById(id).populate("cast")
 
     .then((movieDetail) => {
-        console.log(movieDetail)
+        //console.log(movieDetail)
 
         res.render("movies/movie-details.hbs", {
             movieDetail,
@@ -65,6 +66,62 @@ router.get("/:id/details", (req, res, next) => {
     .catch((err) => {
         next(err)
     })
+})
+
+
+router.post("/:id/delete", (req,res,next) => {
+    const { id } = req.params;
+
+    ModelMovie.findByIdAndRemove(id)
+    .then((response) => {
+        res.redirect("/movies")
+    })
+    .catch((err) => {
+        next(err)
+    })
+
+})
+
+router.get("/:id/edit", (req,res,next) => {
+    const { id } = req.params;
+
+    ModelCelebrities.find().select("name")
+    .then((allCelebs) => {
+        ModelMovie.findById(id)
+        .then((movie) => {
+            res.render("movies/edit-movie.hbs", {
+                movie,
+                allCelebs
+            })
+        })
+        .catch((err) => {
+            next(err)
+        })
+    })
+    .catch((err) => {
+        next(err)
+    })
+    
+})
+
+router.post("/:id/edit", (req,res,next) => {
+
+    const { id } = req.params;
+    const { title, genre, plot, cast } = req.body
+
+    ModelMovie.findByIdAndUpdate(id, {
+        title,
+        genre,
+        plot,
+        cast
+    })
+    .then((response) => {
+        res.redirect(`/movies/${id}/details`)
+    })
+    .catch((err) => {
+        next(err)
+    })
+
 })
 
 

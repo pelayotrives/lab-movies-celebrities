@@ -12,4 +12,11 @@
     <li>{{this.name}},  {{this.occupation}}, {{this.catchPhrase}}</li>
 {{/each}}
 
+
+
+<a href="/movies/{{movieDetail._id}}/edit"><button>Edit</button></a>
+
+<form action="/movies/{{movieDetail._id}}/delete" method="POST">
+    <button> Delete </button>
+</form>
 {{!-- {{movieDetail.cast}} --}}
