@@ -1,0 +1,15 @@
+<h2>Detalle de película</h2>
+
+<br>
+{{movieDetail.title}}
+<br>
+{{movieDetail.genre}}
+<br>
+{{movieDetail.plot}}
+<br>
+<b>Cast:</b>
+{{#each movieDetail.cast}}
+    <li>{{this.name}},  {{this.occupation}}, {{this.catchPhrase}}</li>
+{{/each}}
+
+{{!-- {{movieDetail.cast}} --}}

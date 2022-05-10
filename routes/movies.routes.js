@@ -1,18 +1,17 @@
 const res = require("express/lib/response");
 const ModelMovie = require("../models/Movie.model");
+const ModelCelebrities = require("../models/Celebrity.model.js")
 
 const router = require("express").Router();
 
-//GET (movies/create) => 
+//GET (movies/create) => Crear nueva película
 
 router.get("/create", (req, res, next) => {
-    ModelMovie.find().select("title")
-    .then((movie) => {
-
+    ModelCelebrities.find().select("name")
+    .then((allCelebs) => {
         res.render("movies/new-movie.hbs", {
-            moviesList: movie
+            allCelebs
         })
-
     })
     .catch((err) => {
         next(err)
@@ -35,7 +34,7 @@ router.post("/create", (req, res, next) => {
     })
 })
 
-// GET 
+// GET "/movies" => Muestra el listado de películas
 
 router.get("/", (req, res, next) => {
     ModelMovie.find().select("title")
@@ -48,5 +47,25 @@ router.get("/", (req, res, next) => {
         next(err)
     })
 })
+
+// GET "/movies/:id/details" => Muestra los detalles de la película
+
+router.get("/:id/details", (req, res, next) => {
+    const { id } = req.params;
+
+    ModelMovie.findById(id).populate("cast")
+
+    .then((movieDetail) => {
+        console.log(movieDetail)
+
+        res.render("movies/movie-details.hbs", {
+            movieDetail,
+        })
+    })
+    .catch((err) => {
+        next(err)
+    })
+})
+
 
 module.exports = router

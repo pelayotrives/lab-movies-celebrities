@@ -14,9 +14,9 @@
     <br>
     <br>
     <label for="">Cast:</label>
-    <select name="cast" id="" multiple="true">
-        {{#each moviesList}}
-        <option value="">{{this.title}}</option>
+    <select name="cast" multiple="true">
+        {{#each allCelebs}}
+        <option value="{{this._id}}">{{this.name}}</option>
         {{/each }}
     </select>
     <br>
