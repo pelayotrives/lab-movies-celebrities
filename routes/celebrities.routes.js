@@ -25,6 +25,20 @@ router.post("/create", (req, res, next) => {
     })
 })
 
+// GET "/celebrities" => lista las celebrities
+router.get("/", (req,res,next) => {
+    ModelCelebrities.find()
+    .then((allCeleb) => {
+        res.render("celebrities/celebrities.hbs", {
+            allCeleb
+        })
+    })
+    .catch((err) => {
+        next(err)
+    })
+})
+
+
 
 
 module.exports = router
